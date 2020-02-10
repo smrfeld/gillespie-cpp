@@ -1,0 +1,7 @@
+#ifndef GILSP_H
+#define GILSP_H
+
+#include "gilsp_bits/gillespie.hpp"
+#include "gilsp_bits/helpers.hpp"
+
+#endif
