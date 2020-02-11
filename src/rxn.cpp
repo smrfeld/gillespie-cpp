@@ -166,7 +166,7 @@ void Rxn::print() const {
     for (auto const &sp: _p_list) {
         std::cout << sp << " ";
     }
-    std::cout << "" << std::endl;
+    std::cout << "with rate: " << _kr << std::endl;
 }
 
 };

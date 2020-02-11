@@ -116,14 +116,21 @@ void CountsHist::read_all_count_hists(std::string dir_name) {
 
     bool read_time = true;
     for (const auto & fname : std::filesystem::directory_iterator(dir_name)) {
+
+        // Check name
+        if (fname.path().extension() != ".txt") {
+            continue;
+        }
+        
         f.open(fname.path());
         
-        species = fname.path().filename();
+        species = fname.path().stem();
         _counts_hist[species] = std::vector<int>();
         
         assert (f.is_open());
 
         while (getline(f,line)) {
+            
             if (line == "") { continue; };
             iss = std::istringstream(line);
             iss >> time >> count;
@@ -131,9 +138,11 @@ void CountsHist::read_all_count_hists(std::string dir_name) {
             // Append
             if (read_time) {
                 _t_hist.push_back(atof(time.c_str()));
+                std::cout << "_t_hist: " << _t_hist.back() << std::endl;
             }
             _counts_hist[species].push_back(atoi(count.c_str()));
-            
+            std::cout << "counts: " << species << " " << _counts_hist[species].back() << std::endl;
+
             // Reset
             time=""; count="";
         }
