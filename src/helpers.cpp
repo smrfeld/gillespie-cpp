@@ -18,4 +18,11 @@ double no_to_conc_in_um(int no, double vol_in_l) {
     return no / (pow(10,-6) * vol_in_l * AVOGADRO);
 };
 
+double binomial_coeff_safe(int n, int k) {
+    if (k <= n) {
+        return boost::math::binomial_coefficient<double>(n,k);
+    } else {
+        return 0;
+    }
+};
 };

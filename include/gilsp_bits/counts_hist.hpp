@@ -39,7 +39,7 @@ namespace gilsp {
         // MARK: - Get/set
         // ***************
         
-        void store_counts(double time, Counts counts);
+        void store_counts(double time, const Counts &counts);
         
         std::pair<std::vector<double>, std::vector<int>> get_count_hist(std::string species) const;
         

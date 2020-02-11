@@ -53,11 +53,12 @@ void CountsHist::_move(CountsHist& other) {
     other._counts_hist.clear();
     other._t_hist.clear();
 };
+
 // ***************
 // MARK: - Get/set
 // ***************
 
-void CountsHist::store_counts(double time, Counts counts) {
+void CountsHist::store_counts(double time, const Counts &counts) {
     _t_hist.push_back(time);
     
     for (auto const &species: counts.get_species()) {

@@ -7,35 +7,89 @@
 
 namespace gilsp {
 
-double get_prop(double rate, std::map<std::string,int> species_mult, Counts &counts) {
+// ***************
+// MARK: - Constructor
+// ***************
+
+Gillespie::Gillespie() {
+};
+Gillespie::Gillespie(const Gillespie& other) {
+    _copy(other);
+};
+Gillespie::Gillespie(Gillespie&& other) {
+    _move(other);
+};
+Gillespie& Gillespie::operator=(const Gillespie& other) {
+    if (this != &other) {
+        _clean_up();
+        _copy(other);
+    };
+    return *this;
+};
+Gillespie& Gillespie::operator=(Gillespie&& other) {
+    if (this != &other) {
+        _clean_up();
+        _move(other);
+    };
+    return *this;
+};
+Gillespie::~Gillespie()
+{
+    _clean_up();
+};
+void Gillespie::_clean_up() {
+    // Nothing....
+};
+void Gillespie::_copy(const Gillespie& other) {
+    _props = other._props;
+    _props_sigma = other._props_sigma;
+};
+void Gillespie::_move(Gillespie& other) {
+    _props = other._props;
+    _props_sigma = other._props_sigma;
+
+    // Reset the other
+    other._props.clear();
+};
+
+// ***************
+// MARK: - Get propensity
+// ***************
+
+double Gillespie::_get_prop(double rate, const std::map<std::string,int> &species_mult, const Counts &counts) {
     double prop = rate;
     
     for (auto const &pr: species_mult) {
-        int count = counts.get_count(pr.first);
-        prop *= boost::math::binomial_coefficient<double>(count, pr.second);
+        prop *= binomial_coeff_safe(counts.get_count(pr.first), pr.second);
     }
     
     return prop;
 }
 
-std::pair<Rxn*, double> choose_next_rxn(std::vector<Rxn> &rxn_list, Counts &counts) {
+// ***************
+// MARK: - Choose next reaction
+// ***************
 
-    std::vector<double> props(rxn_list.size(), 0);
-    for (auto i=0; i<rxn_list.size(); i++) {
+std::pair<Rxn const*, double> Gillespie::choose_next_rxn(const std::vector<Rxn> &rxn_list, const Counts &counts) {
+
+    if (rxn_list.size() != _props.size()) {
+        _props = std::vector<double>(rxn_list.size(), 0);
+    }
+    for (auto i=0; i<_props.size(); i++) {
         double prev = 0.0;
         if (i != 0) {
-            prev = props[i-1];
+            prev = _props[i-1];
         }
         
-        if (rxn_list.at(i).get_reactants().size() != 0) {
-            props[i] = prev + get_prop(rxn_list.at(i).get_kr(), rxn_list.at(i).get_reactant_multiplicity(), counts);
+        if (rxn_list.at(i).get_no_reactants() != 0) {
+            _props[i] = prev + _get_prop(rxn_list.at(i).get_kr(), rxn_list.at(i).get_reactant_multiplicity(), counts);
         } else {
-            props[i] = prev + get_prop(rxn_list.at(i).get_kr(), rxn_list.at(i).get_product_multiplicity(), counts);
+            _props[i] = prev + _get_prop(rxn_list.at(i).get_kr(), rxn_list.at(i).get_product_multiplicity(), counts);
         }
     }
     
-    double props_cum = props.back();
-    if (props_cum < 1.0e-8) {
+    double props_cum = _props.back();
+    if (props_cum < _props_sigma) {
         return std::make_pair(nullptr, 10000000.0);
     }
     
@@ -43,8 +97,8 @@ std::pair<Rxn*, double> choose_next_rxn(std::vector<Rxn> &rxn_list, Counts &coun
     double r = props_cum * (double) rand() / (RAND_MAX);
     
     // Find the lower bound
-    auto low = std::lower_bound (props.begin(), props.end(), r);
-    int idx = low - props.begin();
+    auto low = std::lower_bound (_props.begin(), _props.end(), r);
+    int idx = low - _props.begin();
     
     // Find time
     double t = (double) rand() / (RAND_MAX);
@@ -53,7 +107,11 @@ std::pair<Rxn*, double> choose_next_rxn(std::vector<Rxn> &rxn_list, Counts &coun
     return std::make_pair(&rxn_list[idx], dt_next);
 }
 
-void do_rxn(Rxn* rxn, Counts &counts) {
+// ***************
+// MARK: - Do the reaction
+// ***************
+
+void Gillespie::do_rxn(Rxn const* rxn, Counts &counts) {
     for (auto const &pr: rxn->get_reactant_multiplicity()) {
         counts.increment_count(pr.first, -1*pr.second);
     }
@@ -62,7 +120,11 @@ void do_rxn(Rxn* rxn, Counts &counts) {
     }
 }
 
-CountsHist run_gillespie(std::vector<Rxn> &rxn_list, Counts &counts, double dt_st_every, double t_max, bool verbose, std::vector<std::string> conserved_species, bool write_as_we_go, std::string write_dir) {
+// ***************
+// MARK: - Run and return the counts history
+// ***************
+
+CountsHist Gillespie::run(const std::vector<Rxn> &rxn_list, Counts &counts, double dt_st_every, double t_max, bool verbose, std::vector<std::string> conserved_species, bool write_as_we_go, std::string write_dir) {
     
     // Check args
     if (write_as_we_go) {

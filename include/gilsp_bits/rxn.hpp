@@ -44,7 +44,7 @@ namespace gilsp {
         // MARK: - Constructor
         // ***************
         
-        Rxn(std::string name, double kr, std::vector<std::string> reactants, std::vector<std::string> products);
+        Rxn(std::string name, double kr, const std::vector<std::string> reactants, const std::vector<std::string> products);
         Rxn(const Rxn& other);
         Rxn& operator=(const Rxn& other);
         Rxn(Rxn&& other);
@@ -63,10 +63,12 @@ namespace gilsp {
         
         std::vector<std::string> get_reactants() const;
         void set_reactants(std::vector<std::string> reactants);
-
+        int get_no_reactants() const;
+        
         std::vector<std::string> get_products() const;
         void set_products(std::vector<std::string> products);
-
+        int get_no_products() const;
+        
         std::map<std::string,int> get_reactant_multiplicity() const;
         std::map<std::string,int> get_product_multiplicity() const;
         

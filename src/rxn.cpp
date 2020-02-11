@@ -133,12 +133,18 @@ std::vector<std::string> Rxn::get_reactants() const {
 void Rxn::set_reactants(std::vector<std::string> reactants) {
     _r_list = reactants;
 }
+int Rxn::get_no_reactants() const {
+    return _r_list.size();
+}
 
 std::vector<std::string> Rxn::get_products() const {
     return _p_list;
 }
 void Rxn::set_products(std::vector<std::string> products) {
     _p_list = products;
+}
+int Rxn::get_no_products() const {
+    return _p_list.size();
 }
 
 std::map<std::string,int> Rxn::get_reactant_multiplicity() const {
