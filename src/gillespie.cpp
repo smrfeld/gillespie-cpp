@@ -12,7 +12,7 @@ double get_prop(double rate, std::map<std::string,int> species_mult, Counts &cou
     
     for (auto const &pr: species_mult) {
         int count = counts.get_count(pr.first);
-        prop *= binomial_coeff(count, pr.second);
+        prop *= boost::math::binomial_coefficient<double>(count, pr.second);
     }
     
     return prop;

@@ -32,6 +32,9 @@ add_library(gilsp SHARED
 
 target_include_directories(gilsp PRIVATE include/gilsp_bits include/gilsp_bits/fwds)
 
+find_library(BOOST_LIB boost_math_tr1 HINTS /usr/local/opt/boost/lib)
+target_link_libraries(gilsp PUBLIC ${BOOST_LIB})
+
 install(TARGETS gilsp DESTINATION lib)
 
 install(FILES 
