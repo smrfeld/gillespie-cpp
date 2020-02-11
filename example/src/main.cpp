@@ -8,7 +8,7 @@ using namespace std;
 
 int main() {
     
-    /* initialize random seed: */
+    // Random seed
     srand (time(NULL));
 
     vector<string> reactants({"A"});
@@ -24,6 +24,8 @@ int main() {
     auto counts_hist = run_gillespie(rxn_list, counts, dt_st_every, t_max);
     
     counts_hist.print();
+    
+    counts_hist.write_all_count_hist("../data");
     
     return 0;
 }

@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <fstream>
+#include <ostream>
+#include <istream>
+#include <sstream>
 
 namespace gilsp {
 
@@ -76,15 +79,75 @@ std::pair<std::vector<double>, std::vector<int>> CountsHist::get_count_hist(std:
 }
 
 void CountsHist::write_count_hist(std::string species, std::string fname) const {
-    // ...
+    std::ofstream f;
+    f.open(fname);
+    
+    assert (f.is_open());
+
+    // Go through time
+    for (auto t=0; t<_t_hist.size(); t++) {
+        f << _t_hist.at(t) << " " << _counts_hist.at(species).at(t) << "\n";
+    }
+    f.close();
 }
 
 void CountsHist::write_all_count_hist(std::string dir_name) const {
-    // ..
+    for (auto const &pr: _counts_hist) {
+        if (std::string(1,dir_name.back()) != "/") {
+            write_count_hist(pr.first, dir_name + "/" + pr.first + ".txt");
+        } else {
+            write_count_hist(pr.first, dir_name + pr.first + ".txt");
+        }
+    }
 }
 
 void CountsHist::read_all_count_hists(std::string dir_name) {
-    //..
+    std::ifstream f;
+    
+    std::string time="";
+    std::string count="";
+    std::istringstream iss;
+    std::string line;
+    std::string species;
+    
+    // Clear
+    _t_hist.clear();
+    _counts_hist.clear();
+
+    bool read_time = true;
+    for (const auto & fname : std::filesystem::directory_iterator(dir_name)) {
+        f.open(fname.path());
+        
+        species = fname.path().filename();
+        _counts_hist[species] = std::vector<int>();
+        
+        assert (f.is_open());
+
+        while (getline(f,line)) {
+            if (line == "") { continue; };
+            iss = std::istringstream(line);
+            iss >> time >> count;
+            
+            // Append
+            if (read_time) {
+                _t_hist.push_back(atof(time.c_str()));
+            }
+            _counts_hist[species].push_back(atoi(count.c_str()));
+            
+            // Reset
+            time=""; count="";
+        }
+        
+        f.close();
+        
+        // Only read time once
+        read_time = false;
+    }
+    
+    // Check lengths
+    for (auto const &pr: _counts_hist) {
+        assert (_t_hist.size() == pr.second.size());
+    }
 }
 
 std::map<std::string, double> CountsHist::get_average_counts(double time_start) const {
