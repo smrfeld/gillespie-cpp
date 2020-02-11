@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     16371,        383]
-NotebookOptionsPosition[     15948,        367]
-NotebookOutlinePosition[     16287,        382]
-CellTagsIndexPosition[     16244,        379]
+NotebookDataLength[     17169,        404]
+NotebookOptionsPosition[     16524,        384]
+NotebookOutlinePosition[     16863,        399]
+CellTagsIndexPosition[     16820,        396]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -44,42 +44,43 @@ Cell[BoxData[{
        RowBox[{"Directive", "[", 
         RowBox[{"FontSize", "\[Rule]", "24"}], "]"}]}]}], "]"}]}], ";"}], 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{"Row", "[", 
-  RowBox[{"{", "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"Show", "[", "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{"Plot", "[", 
-       RowBox[{
+ RowBox[{"plt", "=", 
+  RowBox[{"Row", "[", 
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Show", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Plot", "[", 
         RowBox[{
-         RowBox[{"data", "[", 
-          RowBox[{"[", 
-           RowBox[{"1", ",", "2"}], "]"}], "]"}], "*", 
-         RowBox[{"Exp", "[", 
-          RowBox[{
-           RowBox[{"-", "3"}], "*", "t"}], "]"}]}], ",", 
-        RowBox[{"{", 
-         RowBox[{"t", ",", "0", ",", 
+         RowBox[{
           RowBox[{"data", "[", 
            RowBox[{"[", 
-            RowBox[{
-             RowBox[{"-", "1"}], ",", "1"}], "]"}], "]"}]}], "}"}], ",", 
-        RowBox[{"PlotStyle", "\[Rule]", "Blue"}]}], "]"}], ",", 
-      "\[IndentingNewLine]", 
-      RowBox[{"ListLinePlot", "[", 
-       RowBox[{"data", ",", 
-        RowBox[{"PlotStyle", "\[Rule]", "Red"}]}], "]"}], ",", 
-      "\[IndentingNewLine]", 
-      RowBox[{"FrameLabel", "\[Rule]", 
-       RowBox[{"{", 
-        RowBox[{"\"\<time\>\"", ",", "\"\<counts\>\""}], "}"}]}], ",", 
-      "\[IndentingNewLine]", 
-      RowBox[{"PlotLabel", "\[Rule]", "\"\<A -> 0\>\""}]}], 
-     "\[IndentingNewLine]", "]"}], ",", "leg"}], "\[IndentingNewLine]", "}"}],
-   "]"}]}], "Input",
- CellChangeTimes->{{3.790370074351088*^9, 3.790370246987813*^9}},
+            RowBox[{"1", ",", "2"}], "]"}], "]"}], "*", 
+          RowBox[{"Exp", "[", 
+           RowBox[{
+            RowBox[{"-", "3"}], "*", "t"}], "]"}]}], ",", 
+         RowBox[{"{", 
+          RowBox[{"t", ",", "0", ",", 
+           RowBox[{"data", "[", 
+            RowBox[{"[", 
+             RowBox[{
+              RowBox[{"-", "1"}], ",", "1"}], "]"}], "]"}]}], "}"}], ",", 
+         RowBox[{"PlotStyle", "\[Rule]", "Blue"}]}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"ListLinePlot", "[", 
+        RowBox[{"data", ",", 
+         RowBox[{"PlotStyle", "\[Rule]", "Red"}]}], "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"FrameLabel", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"\"\<time\>\"", ",", "\"\<counts\>\""}], "}"}]}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"PlotLabel", "\[Rule]", "\"\<A -> 0\>\""}]}], 
+      "\[IndentingNewLine]", "]"}], ",", "leg"}], "\[IndentingNewLine]", 
+    "}"}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.790370074351088*^9, 3.7903702515879393`*^9}},
  CellLabel->
-  "In[978]:=",ExpressionUUID->"47027ddb-fb11-4569-a287-468409091d27"],
+  "In[982]:=",ExpressionUUID->"47027ddb-fb11-4569-a287-468409091d27"],
 
 Cell[BoxData[
  TemplateBox[{GraphicsBox[{{{{{}, {}, 
@@ -120,7 +121,7 @@ KPj5KZkI9Iz21VuQNWBbqX9D2CkCp568vFMOGkheOGKAbxFByMX6veNOGqD3
 qb4iAllULb1vkwYmGQEFW9giMDIWbfT21sA3lPnitHMi+A/391f9
            "]]}, 
          Annotation[#, 
-          "Charting`Private`Tag$4955334#1"]& ]}}, {}}, {{}, {{{}, {}, {
+          "Charting`Private`Tag$4956394#1"]& ]}}, {}}, {{}, {{{}, {}, {
          Hue[0.67, 0.6, 0.6], 
          Directive[
           PointSize[
@@ -360,9 +361,25 @@ qb4iAllULb1vkwYmGQEFW9giMDIWbfT21sA3lPnitHMi+A/391f9
              RowBox[{"FontSize", "\[Rule]", "24"}], "]"}]}]}], "]"}]& ), 
     Editable -> True]},
   "RowDefault"]], "Output",
- CellChangeTimes->{{3.790370120334013*^9, 3.7903702473045692`*^9}},
+ CellChangeTimes->{{3.790370120334013*^9, 3.7903702519164743`*^9}},
  CellLabel->
-  "Out[981]=",ExpressionUUID->"9a8b7371-4051-4622-965b-6f2d56b7362a"]
+  "Out[985]=",ExpressionUUID->"05deaf77-f2c9-4cba-9436-a7a04b2c3218"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<figure.jpg\>\"", ",", "plt", ",", 
+   RowBox[{"ImageResolution", "\[Rule]", "200"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.790370252292748*^9, 3.790370266958679*^9}},
+ CellLabel->
+  "In[986]:=",ExpressionUUID->"c16896a6-617d-47e9-aa7b-c318af0182bf"],
+
+Cell[BoxData["\<\"figure.jpg\"\>"], "Output",
+ CellChangeTimes->{3.790370267789885*^9},
+ CellLabel->
+  "Out[986]=",ExpressionUUID->"7d1e47f1-3485-4272-a0a6-23b448960bca"]
 }, Open  ]]
 },
 WindowSize->{808, 911},
@@ -382,8 +399,12 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[580, 22, 2158, 59, 304, "Input",ExpressionUUID->"47027ddb-fb11-4569-a287-468409091d27"],
-Cell[2741, 83, 13191, 281, 311, "Output",ExpressionUUID->"9a8b7371-4051-4622-965b-6f2d56b7362a"]
+Cell[580, 22, 2218, 60, 304, "Input",ExpressionUUID->"47027ddb-fb11-4569-a287-468409091d27"],
+Cell[2801, 84, 13191, 281, 311, "Output",ExpressionUUID->"05deaf77-f2c9-4cba-9436-a7a04b2c3218"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[16029, 370, 306, 6, 30, "Input",ExpressionUUID->"c16896a6-617d-47e9-aa7b-c318af0182bf"],
+Cell[16338, 378, 170, 3, 34, "Output",ExpressionUUID->"7d1e47f1-3485-4272-a0a6-23b448960bca"]
 }, Open  ]]
 }
 ]
