@@ -56,7 +56,7 @@ void Gillespie::_move(Gillespie& other) {
 // MARK: - Get propensity
 // ***************
 
-double Gillespie::_get_prop(double rate, const std::map<std::string,int> &species_mult, const Counts &counts) {
+double Gillespie::_get_prop(double rate, const std::vector<std::pair<std::string,int>> &species_mult, const Counts &counts) {
     double prop = rate;
     
     for (auto const &pr: species_mult) {

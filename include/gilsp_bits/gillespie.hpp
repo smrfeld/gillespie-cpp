@@ -21,7 +21,7 @@ private:
     double _props_sigma = 1.0e-8;
     
     // Get propensity
-    double _get_prop(double rate, const std::map<std::string,int> &species_mult, const Counts &counts);
+    double _get_prop(double rate, const std::vector<std::pair<std::string,int>> &species_mult, const Counts &counts);
     
     // Internal copy func/clean up
     void _clean_up();

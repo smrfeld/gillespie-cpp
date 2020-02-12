@@ -84,6 +84,7 @@ void Rxn::_move(Rxn& other) {
 // Internal update species and r/p multiplicity
 void Rxn::_update_species_and_multiplicities() {
     // All species
+    _species.clear();
     for (auto const &sp: _r_list) {
         if (!std::count(_species.begin(), _species.end(), sp)) {
             _species.push_back(sp);
@@ -96,15 +97,17 @@ void Rxn::_update_species_and_multiplicities() {
     };
     
     // Multiplicities
+    _species_r_multiplicity.clear();
+    _species_p_multiplicity.clear();
     for (auto const &sp: _species) {
         int r_count = std::count(_r_list.begin(), _r_list.end(), sp);
         if (r_count > 0) {
-            _species_r_multiplicity[sp] = r_count;
+            _species_r_multiplicity.push_back(std::make_pair(sp,r_count));
         };
         
         int p_count = std::count(_p_list.begin(), _p_list.end(), sp);
         if (p_count > 0) {
-            _species_p_multiplicity[sp] = p_count;
+            _species_p_multiplicity.push_back(std::make_pair(sp,p_count));
         };
     };
 };
@@ -127,7 +130,7 @@ void Rxn::set_kr(double kr) {
     _kr = kr;
 };
 
-std::vector<std::string> Rxn::get_reactants() const {
+const std::vector<std::string>& Rxn::get_reactants() const {
     return _r_list;
 }
 void Rxn::set_reactants(std::vector<std::string> reactants) {
@@ -137,7 +140,7 @@ int Rxn::get_no_reactants() const {
     return _r_list.size();
 }
 
-std::vector<std::string> Rxn::get_products() const {
+const std::vector<std::string>& Rxn::get_products() const {
     return _p_list;
 }
 void Rxn::set_products(std::vector<std::string> products) {
@@ -147,14 +150,14 @@ int Rxn::get_no_products() const {
     return _p_list.size();
 }
 
-std::map<std::string,int> Rxn::get_reactant_multiplicity() const {
+const std::vector<std::pair<std::string,int>>& Rxn::get_reactant_multiplicity() const {
     return _species_r_multiplicity;
 }
-std::map<std::string,int> Rxn::get_product_multiplicity() const {
+const std::vector<std::pair<std::string,int>>& Rxn::get_product_multiplicity() const {
     return _species_p_multiplicity;
 }
 
-std::vector<std::string> Rxn::get_species() const {
+const std::vector<std::string>& Rxn::get_species() const {
     return _species;
 }
 

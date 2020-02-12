@@ -26,8 +26,8 @@ namespace gilsp {
         std::vector<std::string> _species;
         
         // Multiplicities
-        std::map<std::string, int> _species_r_multiplicity;
-        std::map<std::string, int> _species_p_multiplicity;
+        std::vector<std::pair<std::string,int>> _species_r_multiplicity;
+        std::vector<std::pair<std::string,int>> _species_p_multiplicity;
 
         // Internal update species and r/p multiplicity
         void _update_species_and_multiplicities();
@@ -61,18 +61,18 @@ namespace gilsp {
         double get_kr() const;
         void set_kr(double kr);
         
-        std::vector<std::string> get_reactants() const;
+        const std::vector<std::string>& get_reactants() const;
         void set_reactants(std::vector<std::string> reactants);
         int get_no_reactants() const;
         
-        std::vector<std::string> get_products() const;
+        const std::vector<std::string>& get_products() const;
         void set_products(std::vector<std::string> products);
         int get_no_products() const;
         
-        std::map<std::string,int> get_reactant_multiplicity() const;
-        std::map<std::string,int> get_product_multiplicity() const;
+        const std::vector<std::pair<std::string,int>>& get_reactant_multiplicity() const;
+        const std::vector<std::pair<std::string,int>>& get_product_multiplicity() const;
         
-        std::vector<std::string> get_species() const;
+        const std::vector<std::string>& get_species() const;
                 
         // ***************
         // MARK: - Print

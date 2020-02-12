@@ -19,7 +19,9 @@ double no_to_conc_in_um(int no, double vol_in_l) {
 };
 
 double binomial_coeff_safe(int n, int k) {
-    if (k <= n) {
+    if (k == 1) {
+        return n;
+    } else if (k <= n) {
         return boost::math::binomial_coefficient<double>(n,k);
     } else {
         return 0;

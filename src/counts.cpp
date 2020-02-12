@@ -69,12 +69,15 @@ void Counts::increment_count(std::string species, int increment) {
 }
 
 int Counts::get_count(std::string species) const {
+    return _counts.at(species);
+    /*
     auto it = _counts.find(species);
     if (it != _counts.end()) {
         return it->second;
     } else {
         return 0;
     }
+     */
 }
 
 std::vector<std::string> Counts::get_species() const {
