@@ -5,6 +5,7 @@
 #include <ostream>
 #include <istream>
 #include <sstream>
+#include "assert.h"
 
 namespace gilsp {
 

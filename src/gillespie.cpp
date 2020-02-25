@@ -4,6 +4,7 @@
 #include <stdlib.h>     /* srand, rand */
 #include <iostream>
 #include <numeric>      // std::accumulate
+#include "assert.h"
 
 namespace gilsp {
 

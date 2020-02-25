@@ -1,5 +1,6 @@
 #include "../include/gilsp_bits/counts.hpp"
 
+#include "assert.h"
 #include <iostream>
 #include <fstream>
 
