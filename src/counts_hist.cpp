@@ -139,10 +139,10 @@ void CountsHist::read_all_count_hists(std::string dir_name) {
             // Append
             if (read_time) {
                 _t_hist.push_back(atof(time.c_str()));
-                std::cout << "_t_hist: " << _t_hist.back() << std::endl;
+                // std::cout << "_t_hist: " << _t_hist.back() << std::endl;
             }
             _counts_hist[species].push_back(atoi(count.c_str()));
-            std::cout << "counts: " << species << " " << _counts_hist[species].back() << std::endl;
+            // std::cout << "counts: " << species << " " << _counts_hist[species].back() << std::endl;
 
             // Reset
             time=""; count="";
