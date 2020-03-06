@@ -44,10 +44,11 @@ namespace gilsp {
         std::pair<std::vector<double>, std::vector<int>> get_count_hist(std::string species) const;
         
         void write_count_hist(std::string species, std::string fname) const;
+        void write_count_hist_all_species(std::string dir_name) const;
         
-        void write_all_count_hist(std::string dir_name) const;
-        
-        void read_all_count_hists(std::string dir_name);
+        void write_count_hist_to_separate_files_each_timepoint(std::string dir_name) const;
+                        
+        void read_count_hist_all_species(std::string dir_name);
         
         std::map<std::string, double> get_average_counts(double time_start) const;
         

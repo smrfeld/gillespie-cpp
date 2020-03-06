@@ -32,4 +32,28 @@ double binomial_coeff_safe(int n, int k) {
         return 0;
     }
 };
+
+
+std::string pad_str(int i, int n_zeros) {
+    std::stringstream fname;
+    fname << std::setfill('0') << std::setw(n_zeros) << i;
+    return fname.str();
+};
+
+std::string prec_str(double x, int prec) {
+    std::stringstream fname;
+    fname << std::fixed << std::setprecision(2) << x;
+    return fname.str();
+};
+
+std::string prec_p_str(double x, int prec) {
+    auto str = prec_str(x,prec);
+    for (int i = 0; i < str.length(); ++i) {
+        if (str[i] == "."[0]) {
+            str[i] = "p"[0];
+        }
+    }
+    
+    return str;
+};
 };

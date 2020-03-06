@@ -1,4 +1,5 @@
 #include "../include/gilsp_bits/counts_hist.hpp"
+#include "../include/gilsp_bits/helpers.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -94,7 +95,7 @@ void CountsHist::write_count_hist(std::string species, std::string fname) const 
     f.close();
 }
 
-void CountsHist::write_all_count_hist(std::string dir_name) const {
+void CountsHist::write_count_hist_all_species(std::string dir_name) const {
     for (auto const &pr: _counts_hist) {
         if (std::string(1,dir_name.back()) != "/") {
             write_count_hist(pr.first, dir_name + "/" + pr.first + ".txt");
@@ -104,7 +105,30 @@ void CountsHist::write_all_count_hist(std::string dir_name) const {
     }
 }
 
-void CountsHist::read_all_count_hists(std::string dir_name) {
+void CountsHist::write_count_hist_to_separate_files_each_timepoint(std::string dir_name) const {
+    std::ofstream f;
+    std::string dir_name_mod;
+    if (std::string(1,dir_name.back()) != "/") {
+        dir_name_mod = dir_name + "/";
+    } else {
+        dir_name_mod = dir_name;
+    }
+    
+    for (auto t=0; t<_t_hist.size(); t++) {
+        f.open(dir_name_mod + pad_str(t,5) + ".txt");
+        
+        assert (f.is_open());
+
+        for (auto const &pr: _counts_hist) {
+            f << pr.first << " " << pr.second.at(t) << "\n";
+        }
+        
+        f.close();
+    }
+}
+
+
+void CountsHist::read_count_hist_all_species(std::string dir_name) {
     std::ifstream f;
     
     std::string time="";
