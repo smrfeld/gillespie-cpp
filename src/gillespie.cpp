@@ -149,14 +149,14 @@ CountsHist Gillespie::run(const std::vector<Rxn> &rxn_list, Counts &counts, doub
     
         // Pick next rxn
         auto pr = choose_next_rxn(rxn_list, counts);
-        
+                
         // Check if exists
         if (pr.first == nullptr) {
             break;
         }
         
         // Store
-        while (t_st_next < t_curr + pr.second) {
+        while ((t_st_next < t_curr + pr.second) && t_st_next <= t_max) {
             
             if (verbose) {
                 std::cout << t_st_next << " / " << t_max << std::endl;
@@ -171,10 +171,15 @@ CountsHist Gillespie::run(const std::vector<Rxn> &rxn_list, Counts &counts, doub
             // Advance
             t_st_next += dt_st_every;
         }
-        
+                
         // Advance time
         t_curr += pr.second;
         
+        // Reached the end of time?
+        if (t_curr > t_max) {
+            break;
+        }
+
         // Do the reaction
         do_rxn(pr.first, counts);
         
