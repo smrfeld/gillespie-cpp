@@ -156,7 +156,7 @@ CountsHist Gillespie::run(const std::vector<Rxn> &rxn_list, Counts &counts, doub
         }
         
         // Store
-        while ((t_st_next < t_curr + pr.second) && t_st_next <= t_max) {
+        while ((t_st_next < t_curr + pr.second) && (t_st_next <= t_max)) {
             
             if (verbose) {
                 std::cout << t_st_next << " / " << t_max << std::endl;
@@ -187,6 +187,20 @@ CountsHist Gillespie::run(const std::vector<Rxn> &rxn_list, Counts &counts, doub
         for (auto const &sp: conserved_species) {
             counts.set_count(sp, counts_init.get_count(sp));
         }
+    }
+    
+    // Fill up the rest of the counts
+    while (t_st_next <= t_max) {
+        
+        if (verbose) {
+            std::cout << t_st_next << " / " << t_max << std::endl;
+        }
+        
+        // Store
+        counts_hist.store_counts(t_st_next, counts);
+                
+        // Advance
+        t_st_next += dt_st_every;
     }
     
     return counts_hist;
