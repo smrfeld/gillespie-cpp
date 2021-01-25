@@ -42,7 +42,7 @@ std::string pad_str(int i, int n_zeros) {
 
 std::string prec_str(double x, int prec) {
     std::stringstream fname;
-    fname << std::fixed << std::setprecision(2) << x;
+    fname << std::fixed << std::setprecision(prec) << x;
     return fname.str();
 };
 
