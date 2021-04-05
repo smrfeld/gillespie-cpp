@@ -149,11 +149,13 @@ CountsHist Gillespie::run(const std::vector<Rxn> &rxn_list, Counts &counts, doub
     
         // Pick next rxn
         auto pr = choose_next_rxn(rxn_list, counts);
-                
+        
         // Check if exists
         if (pr.first == nullptr) {
             break;
         }
+        
+        // std::cout << "Next rxn time: " << pr.second << std::endl;
         
         // Store
         while ((t_st_next < t_curr + pr.second) && (t_st_next <= t_max)) {

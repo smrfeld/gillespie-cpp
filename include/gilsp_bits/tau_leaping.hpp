@@ -30,7 +30,10 @@ private:
     std::map<std::string, double> _aux_mu, _aux_var;
     
     // Highest order rate for every species
-    std::map<std::string, double> highest_order_rate;
+    std::map<std::string, int> _highest_order_event;
+    
+    // Epsilon
+    double _epsilon_cao = 0.03;
     
     // Get propensity
     double _get_prop(double rate, const std::vector<std::pair<std::string,int>> &species_mult, const Counts &counts);

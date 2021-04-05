@@ -45,15 +45,28 @@ void TauLeaping::_copy(const TauLeaping& other) {
     _propensities = other._propensities;
     _no_times_rxns_occur_in_tau = other._no_times_rxns_occur_in_tau;
     _propensities_sigma = other._propensities_sigma;
+    
+    _aux_mu = other._aux_mu;
+    _aux_var = other._aux_var;
+    _highest_order_event = other._highest_order_event;
+    _epsilon_cao = other._epsilon_cao;
 };
 void TauLeaping::_move(TauLeaping& other) {
     _propensities = other._propensities;
     _no_times_rxns_occur_in_tau = other._no_times_rxns_occur_in_tau;
     _propensities_sigma = other._propensities_sigma;
 
+    _aux_mu = other._aux_mu;
+    _aux_var = other._aux_var;
+    _highest_order_event = other._highest_order_event;
+    _epsilon_cao = other._epsilon_cao;
+    
     // Reset the other
     other._propensities.clear();
     other._no_times_rxns_occur_in_tau.clear();
+    other._aux_var.clear();
+    other._aux_mu.clear();
+    other._highest_order_event.clear();
 };
 
 // ***************
@@ -79,11 +92,13 @@ double TauLeaping::_get_prop(double rate, const std::vector<std::pair<std::strin
 
 double TauLeaping::calculate_tau_step_size_cao(const std::vector<Rxn> &rxn_list, const Counts &counts) {
     
-    // Calculate aux variables
+    // Calculate aux variables and find highest order event for every species
+    
     // Reset them
     for (auto species: counts.get_species()) {
         _aux_mu[species] = 0.0;
         _aux_var[species] = 0.0;
+        _highest_order_event[species] = 0.0;
     }
     
     // Go through rxns
@@ -91,15 +106,39 @@ double TauLeaping::calculate_tau_step_size_cao(const std::vector<Rxn> &rxn_list,
         for (auto const &pr: rxn_list.at(i).get_reactant_multiplicity()) {
             _aux_mu[pr.first] += -1 * pr.second * _propensities.at(i);
             _aux_var[pr.first] += pow(-1 * pr.second,2) * _propensities.at(i);
+            
+            // Highest order event
+            if (_propensities.at(i) > _propensities.at(_highest_order_event.at(pr.first))) {
+                _highest_order_event[pr.first] = i;
+            }
         }
         for (auto const &pr: rxn_list.at(i).get_product_multiplicity()) {
             _aux_mu[pr.first] += pr.second * _propensities.at(i);
             _aux_var[pr.first] += pow(pr.second,2) * _propensities.at(i);
+            
+            // Highest order event
+            if (_propensities.at(i) > _propensities.at(_highest_order_event.at(pr.first))) {
+                _highest_order_event[pr.first] = i;
+            }
         }
     }
     
-    // For each species, find highest order event which it is involved in
+    // Calculate time step tau
+    double tau_min = 100000000000.0;
+    for (auto species: counts.get_species()) {
+        double count = counts.get_count(species);
+        double highest_order_propensity = _propensities.at(_highest_order_event.at(species));
+        double mu = _aux_mu.at(species);
+        double var = _aux_var.at(species);
+        
+        double num = std::max(_epsilon_cao * count / highest_order_propensity, 1.0);
+        double tau_1 = num / abs(mu);
+        double tau_2 = pow(num, 2) / abs(var);
+        
+        tau_min = std::min(tau_min, std::min(tau_1, tau_2));
+    }
     
+    return tau_min;
 }
 
 // ***************
@@ -127,8 +166,11 @@ std::pair<bool,double> TauLeaping::calculate_no_times_reaction_occurs_in_tau(con
         return std::make_pair(false,0.0);
     }
     
+    // Compute tau
+    double tau = calculate_tau_step_size_cao(rxn_list, counts);
+    // std::cout << "Tau computed: " << tau << std::endl;
+    
     // Number of times each event occurs in tau interval
-    double tau = 0.1;
     if (rxn_list.size() != _no_times_rxns_occur_in_tau.size()) {
         _no_times_rxns_occur_in_tau = std::vector<int>(rxn_list.size(), 0);
     }
