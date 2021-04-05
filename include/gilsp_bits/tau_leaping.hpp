@@ -13,6 +13,15 @@ namespace gilsp {
 // MARK: - TauLeaping
 // ***************
 
+struct OptionsTauLeaping {
+    bool verbose=false;
+    std::vector<std::string> conserved_species=std::vector<std::string>();
+    bool write_as_we_go=false;
+    std::string write_dir="";
+    bool with_fixed_tau=false;
+    double tau_fixed=0.1;
+};
+
 class TauLeaping {
     
 private:
@@ -69,7 +78,7 @@ public:
     // MARK: - Calculate no times each reaction occurs in tau
     // ***************
   
-    std::pair<bool,double> calculate_no_times_reaction_occurs_in_tau(const std::vector<Rxn> &rxn_list, const Counts &counts);
+    std::pair<bool,double> calculate_no_times_reaction_occurs_in_tau(const std::vector<Rxn> &rxn_list, const Counts &counts, bool with_fixed_tau, double tau_fixed=0.1);
 
     // ***************
     // MARK: - Do the reaction
@@ -81,7 +90,7 @@ public:
     // MARK: - Run and return the counts history
     // ***************
     
-    CountsHist run(const std::vector<Rxn> &rxn_list, Counts &counts, double dt_st_every, double t_max, bool verbose=false, std::vector<std::string> conserved_species=std::vector<std::string>(), bool write_as_we_go=false, std::string write_dir="");
+    CountsHist run(const std::vector<Rxn> &rxn_list, Counts &counts, double dt_st_every, double t_max, OptionsTauLeaping options=OptionsTauLeaping());
     };
 };
 

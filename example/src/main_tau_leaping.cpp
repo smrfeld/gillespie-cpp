@@ -23,7 +23,11 @@ int main() {
     vector<Rxn> rxn_list({rxn});
     double dt_st_every = 0.1;
     double t_max = 100.0;
-    CountsHist counts_hist = g.run(rxn_list, counts, dt_st_every, t_max);
+    
+    OptionsTauLeaping options;
+    options.with_fixed_tau=true;
+    options.tau_fixed=0.2;
+    CountsHist counts_hist = g.run(rxn_list, counts, dt_st_every, t_max, options);
 
     // Print it
     counts_hist.print();

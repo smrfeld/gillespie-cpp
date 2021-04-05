@@ -145,7 +145,7 @@ double TauLeaping::calculate_tau_step_size_cao(const std::vector<Rxn> &rxn_list,
 // MARK: - Calculate no times each reaction occurs in tau
 // ***************
 
-std::pair<bool,double> TauLeaping::calculate_no_times_reaction_occurs_in_tau(const std::vector<Rxn> &rxn_list, const Counts &counts) {
+std::pair<bool,double> TauLeaping::calculate_no_times_reaction_occurs_in_tau(const std::vector<Rxn> &rxn_list, const Counts &counts, bool with_fixed_tau, double tau_fixed) {
 
     if (rxn_list.size() != _propensities.size()) {
         _propensities = std::vector<double>(rxn_list.size(), 0);
@@ -167,8 +167,13 @@ std::pair<bool,double> TauLeaping::calculate_no_times_reaction_occurs_in_tau(con
     }
     
     // Compute tau
-    double tau = calculate_tau_step_size_cao(rxn_list, counts);
-    // std::cout << "Tau computed: " << tau << std::endl;
+    double tau;
+    if (with_fixed_tau) {
+        tau = tau_fixed;
+    } else {
+        tau = calculate_tau_step_size_cao(rxn_list, counts);
+        // std::cout << "Tau computed: " << tau << std::endl;
+    }
     
     // Number of times each event occurs in tau interval
     if (rxn_list.size() != _no_times_rxns_occur_in_tau.size()) {
@@ -201,11 +206,11 @@ void TauLeaping::update_states_in_tau(const std::vector<Rxn> &rxn_list, Counts &
 // MARK: - Run and return the counts history
 // ***************
 
-CountsHist TauLeaping::run(const std::vector<Rxn> &rxn_list, Counts &counts, double dt_st_every, double t_max, bool verbose, std::vector<std::string> conserved_species, bool write_as_we_go, std::string write_dir) {
+CountsHist TauLeaping::run(const std::vector<Rxn> &rxn_list, Counts &counts, double dt_st_every, double t_max, OptionsTauLeaping options) {
     
     // Check args
-    if (write_as_we_go) {
-        assert (write_dir != "");
+    if (options.write_as_we_go) {
+        assert (options.write_dir != "");
     }
     
     // Setup writing as we go
@@ -223,7 +228,7 @@ CountsHist TauLeaping::run(const std::vector<Rxn> &rxn_list, Counts &counts, dou
     double t_curr = 0.0;
     while (t_curr <= t_max) {
     
-        auto pr0 = calculate_no_times_reaction_occurs_in_tau(rxn_list, counts);
+        auto pr0 = calculate_no_times_reaction_occurs_in_tau(rxn_list, counts, options.with_fixed_tau, options.tau_fixed);
         if (!pr0.first) {
             // Stop, no rxns left
             break;
@@ -233,7 +238,7 @@ CountsHist TauLeaping::run(const std::vector<Rxn> &rxn_list, Counts &counts, dou
         // Store current counts
         while ((t_st_next < t_curr + tau) && (t_st_next <= t_max)) {
             
-            if (verbose) {
+            if (options.verbose) {
                 std::cout << t_st_next << " / " << t_max << std::endl;
             }
             
@@ -259,7 +264,7 @@ CountsHist TauLeaping::run(const std::vector<Rxn> &rxn_list, Counts &counts, dou
         update_states_in_tau(rxn_list, counts);
                 
         // Conserve species
-        for (auto const &sp: conserved_species) {
+        for (auto const &sp: options.conserved_species) {
             counts.set_count(sp, counts_init.get_count(sp));
         }
     }
@@ -267,7 +272,7 @@ CountsHist TauLeaping::run(const std::vector<Rxn> &rxn_list, Counts &counts, dou
     // Fill up the rest of the counts
     while (t_st_next <= t_max) {
         
-        if (verbose) {
+        if (options.verbose) {
             std::cout << t_st_next << " / " << t_max << std::endl;
         }
         

@@ -125,11 +125,11 @@ void Gillespie::do_rxn(Rxn const* rxn, Counts &counts) {
 // MARK: - Run and return the counts history
 // ***************
 
-CountsHist Gillespie::run(const std::vector<Rxn> &rxn_list, Counts &counts, double dt_st_every, double t_max, bool verbose, std::vector<std::string> conserved_species, bool write_as_we_go, std::string write_dir) {
+CountsHist Gillespie::run(const std::vector<Rxn> &rxn_list, Counts &counts, double dt_st_every, double t_max, OptionsGillespie options) {
     
     // Check args
-    if (write_as_we_go) {
-        assert (write_dir != "");
+    if (options.write_as_we_go) {
+        assert (options.write_dir != "");
     }
     
     // Setup writing as we go
@@ -160,7 +160,7 @@ CountsHist Gillespie::run(const std::vector<Rxn> &rxn_list, Counts &counts, doub
         // Store
         while ((t_st_next < t_curr + pr.second) && (t_st_next <= t_max)) {
             
-            if (verbose) {
+            if (options.verbose) {
                 std::cout << t_st_next << " / " << t_max << std::endl;
             }
             
@@ -186,7 +186,7 @@ CountsHist Gillespie::run(const std::vector<Rxn> &rxn_list, Counts &counts, doub
         do_rxn(pr.first, counts);
         
         // Conserve species
-        for (auto const &sp: conserved_species) {
+        for (auto const &sp: options.conserved_species) {
             counts.set_count(sp, counts_init.get_count(sp));
         }
     }
@@ -194,7 +194,7 @@ CountsHist Gillespie::run(const std::vector<Rxn> &rxn_list, Counts &counts, doub
     // Fill up the rest of the counts
     while (t_st_next <= t_max) {
         
-        if (verbose) {
+        if (options.verbose) {
             std::cout << t_st_next << " / " << t_max << std::endl;
         }
         
