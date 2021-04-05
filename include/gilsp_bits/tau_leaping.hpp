@@ -16,15 +16,21 @@ namespace gilsp {
 class TauLeaping {
     
 private:
-            
+    
     // Rates
-    std::vector<double> _rates;
+    std::vector<double> _propensities;
     
     // No times events occur in tau interval
     std::vector<int> _no_times_rxns_occur_in_tau;
-    
+        
     // Propensity sigma
-    double _rates_sigma = 1.0e-8;
+    double _propensities_sigma = 1.0e-8;
+    
+    // Aux variables
+    std::map<std::string, double> _aux_mu, _aux_var;
+    
+    // Highest order rate for every species
+    std::map<std::string, double> highest_order_rate;
     
     // Get propensity
     double _get_prop(double rate, const std::vector<std::pair<std::string,int>> &species_mult, const Counts &counts);
@@ -48,7 +54,16 @@ public:
     ~TauLeaping();
     
     // ***************
-    // MARK: - Choose next reaction
+    // MARK: - Tau step size selection
+    // ***************
+
+    // According to
+    //  Cao, Y.; Gillespie, D. T.; Petzold, L. R. (2006). "Efficient step size selection for the tau-leaping simulation method" (PDF). The Journal of Chemical Physics. 124 (4): 044109. Bibcode:2006JChPh.124d4109C. doi:10.1063/1.2159468. PMID 16460151.
+
+    double calculate_tau_step_size_cao(const std::vector<Rxn> &rxn_list, const Counts &counts);
+
+    // ***************
+    // MARK: - Calculate no times each reaction occurs in tau
     // ***************
   
     std::pair<bool,double> calculate_no_times_reaction_occurs_in_tau(const std::vector<Rxn> &rxn_list, const Counts &counts);
@@ -57,7 +72,7 @@ public:
     // MARK: - Do the reaction
     // ***************
     
-    void update_states_in_tau(const std::vector<Rxn> &rxn_list, Counts &counts);
+    void update_states_in_tau(const std::vector<Rxn> &rxn_list, Counts &counts) const;
 
     // ***************
     // MARK: - Run and return the counts history

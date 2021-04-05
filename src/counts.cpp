@@ -58,7 +58,7 @@ void Counts::set_count(std::string species, int count) {
     assert (_counts[species] >= 0);
 }
 
-void Counts::increment_count(std::string species, int increment) {
+void Counts::increment_count(std::string species, int increment, bool require_non_negative) {
     auto it = _counts.find(species);
     if (it != _counts.end()) {
         _counts[species] += increment;
@@ -66,7 +66,11 @@ void Counts::increment_count(std::string species, int increment) {
         _counts[species] = increment;
     }
     
-    assert (_counts[species] >= 0);
+    if (require_non_negative) {
+        assert (_counts[species] >= 0);
+    } else {
+        _counts[species] = std::max(0,_counts.at(species));
+    }
 }
 
 int Counts::get_count(std::string species) const {

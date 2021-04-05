@@ -41,7 +41,7 @@ namespace gilsp {
         
         void set_count(std::string species, int count);
         
-        void increment_count(std::string species, int increment);
+        void increment_count(std::string species, int increment, bool require_non_negative);
         
         int get_count(std::string species) const;
         

@@ -42,17 +42,17 @@ void TauLeaping::_clean_up() {
     // Nothing....
 };
 void TauLeaping::_copy(const TauLeaping& other) {
-    _rates = other._rates;
+    _propensities = other._propensities;
     _no_times_rxns_occur_in_tau = other._no_times_rxns_occur_in_tau;
-    _rates_sigma = other._rates_sigma;
+    _propensities_sigma = other._propensities_sigma;
 };
 void TauLeaping::_move(TauLeaping& other) {
-    _rates = other._rates;
+    _propensities = other._propensities;
     _no_times_rxns_occur_in_tau = other._no_times_rxns_occur_in_tau;
-    _rates_sigma = other._rates_sigma;
+    _propensities_sigma = other._propensities_sigma;
 
     // Reset the other
-    other._rates.clear();
+    other._propensities.clear();
     other._no_times_rxns_occur_in_tau.clear();
 };
 
@@ -71,41 +71,69 @@ double TauLeaping::_get_prop(double rate, const std::vector<std::pair<std::strin
 }
 
 // ***************
-// MARK: - Choose next reaction
+// MARK: - Tau step size selection
+// ***************
+
+// According to
+//  Cao, Y.; Gillespie, D. T.; Petzold, L. R. (2006). "Efficient step size selection for the tau-leaping simulation method" (PDF). The Journal of Chemical Physics. 124 (4): 044109. Bibcode:2006JChPh.124d4109C. doi:10.1063/1.2159468. PMID 16460151.
+
+double TauLeaping::calculate_tau_step_size_cao(const std::vector<Rxn> &rxn_list, const Counts &counts) {
+    
+    // Calculate aux variables
+    // Reset them
+    for (auto species: counts.get_species()) {
+        _aux_mu[species] = 0.0;
+        _aux_var[species] = 0.0;
+    }
+    
+    // Go through rxns
+    for (auto i=0; i<rxn_list.size(); i++) {
+        for (auto const &pr: rxn_list.at(i).get_reactant_multiplicity()) {
+            _aux_mu[pr.first] += -1 * pr.second * _propensities.at(i);
+            _aux_var[pr.first] += pow(-1 * pr.second,2) * _propensities.at(i);
+        }
+        for (auto const &pr: rxn_list.at(i).get_product_multiplicity()) {
+            _aux_mu[pr.first] += pr.second * _propensities.at(i);
+            _aux_var[pr.first] += pow(pr.second,2) * _propensities.at(i);
+        }
+    }
+    
+    // For each species, find highest order event which it is involved in
+    
+}
+
+// ***************
+// MARK: - Calculate no times each reaction occurs in tau
 // ***************
 
 std::pair<bool,double> TauLeaping::calculate_no_times_reaction_occurs_in_tau(const std::vector<Rxn> &rxn_list, const Counts &counts) {
 
-    if (rxn_list.size() != _rates.size()) {
-        _rates = std::vector<double>(rxn_list.size(), 0);
+    if (rxn_list.size() != _propensities.size()) {
+        _propensities = std::vector<double>(rxn_list.size(), 0);
     }
-    for (auto i=0; i<_rates.size(); i++) {
+    for (auto i=0; i<_propensities.size(); i++) {
         if (rxn_list.at(i).get_no_reactants() != 0) {
-            _rates[i] = _get_prop(rxn_list.at(i).get_kr(), rxn_list.at(i).get_reactant_multiplicity(), counts);
+            _propensities[i] = _get_prop(rxn_list.at(i).get_kr(), rxn_list.at(i).get_reactant_multiplicity(), counts);
         } else {
-            _rates[i] = _get_prop(rxn_list.at(i).get_kr(), rxn_list.at(i).get_product_multiplicity(), counts);
+            _propensities[i] = _get_prop(rxn_list.at(i).get_kr(), rxn_list.at(i).get_product_multiplicity(), counts);
         }
     }
     
-    // Normalize
-    double rates_total = std::accumulate(_rates.begin(), _rates.end(),
-                                   decltype(_rates)::value_type(0));
-    
-    if (rates_total < _rates_sigma) {
+    // Ensure there is any propensity
+    double rates_total = std::accumulate(_propensities.begin(),
+                                         _propensities.end(),
+                                         decltype(_propensities)::value_type(0));
+    if (rates_total < _propensities_sigma) {
         return std::make_pair(false,0.0);
     }
     
-    for (auto i=0; i<_rates.size(); i++) {
-        _rates[i] /= rates_total;
-    }
-
     // Number of times each event occurs in tau interval
-    double tau = 1.0;
+    double tau = 0.1;
     if (rxn_list.size() != _no_times_rxns_occur_in_tau.size()) {
         _no_times_rxns_occur_in_tau = std::vector<int>(rxn_list.size(), 0);
     }
     for (auto i=0; i<_no_times_rxns_occur_in_tau.size(); i++) {
-        _no_times_rxns_occur_in_tau[i] = sample_poisson(_rates.at(i) * tau);
+        _no_times_rxns_occur_in_tau[i] = sample_poisson(_propensities.at(i) * tau);
     }
     
     return std::make_pair(true,tau);
@@ -115,14 +143,14 @@ std::pair<bool,double> TauLeaping::calculate_no_times_reaction_occurs_in_tau(con
 // MARK: - Do the reaction
 // ***************
 
-void TauLeaping::update_states_in_tau(const std::vector<Rxn> &rxn_list, Counts &counts) {
+void TauLeaping::update_states_in_tau(const std::vector<Rxn> &rxn_list, Counts &counts) const {
     // Update the states
     for (auto i=0; i<rxn_list.size(); i++) {
         for (auto const &pr: rxn_list.at(i).get_reactant_multiplicity()) {
-            counts.increment_count(pr.first, -1 * pr.second * _no_times_rxns_occur_in_tau.at(i));
+            counts.increment_count(pr.first, -1 * pr.second * _no_times_rxns_occur_in_tau.at(i), false);
         }
         for (auto const &pr: rxn_list.at(i).get_product_multiplicity()) {
-            counts.increment_count(pr.first, pr.second * _no_times_rxns_occur_in_tau.at(i));
+            counts.increment_count(pr.first, pr.second * _no_times_rxns_occur_in_tau.at(i), false);
         }
     }
 }

@@ -114,10 +114,10 @@ std::pair<Rxn const*, double> Gillespie::choose_next_rxn(const std::vector<Rxn> 
 
 void Gillespie::do_rxn(Rxn const* rxn, Counts &counts) {
     for (auto const &pr: rxn->get_reactant_multiplicity()) {
-        counts.increment_count(pr.first, -1*pr.second);
+        counts.increment_count(pr.first, -1*pr.second, true);
     }
     for (auto const &pr: rxn->get_product_multiplicity()) {
-        counts.increment_count(pr.first, pr.second);
+        counts.increment_count(pr.first, pr.second, true);
     }
 }
 
