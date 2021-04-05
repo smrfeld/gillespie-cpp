@@ -19,7 +19,7 @@ int main() {
     counts.set_count("A", 100);
  
     // Run
-    Gillespie g;
+    TauLeaping g;
     vector<Rxn> rxn_list({rxn});
     double dt_st_every = 0.1;
     double t_max = 100.0;
@@ -29,7 +29,7 @@ int main() {
     counts_hist.print();
     
     // Write it
-    counts_hist.write_all_count_hist("../data");
+    counts_hist.write_count_hist_all_species("../data_tau_leaping");
     
     return 0;
 }

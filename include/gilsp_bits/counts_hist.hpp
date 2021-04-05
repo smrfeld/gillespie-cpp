@@ -4,6 +4,9 @@
 
 #include "counts.hpp"
 
+#ifndef COUNTS_HIST_H
+#define COUNTS_HIST_H
+
 namespace gilsp {
 
     // ***************
@@ -61,3 +64,5 @@ namespace gilsp {
         void print() const;
     };
 };
+
+#endif

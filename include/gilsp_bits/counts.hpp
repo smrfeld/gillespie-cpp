@@ -2,6 +2,9 @@
 #include <map>
 #include <vector>
 
+#ifndef COUNTS_H
+#define COUNTS_H
+
 namespace gilsp {
 
     // ***************
@@ -51,3 +54,5 @@ namespace gilsp {
         void print() const;
     };
 };
+
+#endif

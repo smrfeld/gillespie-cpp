@@ -56,4 +56,22 @@ std::string prec_p_str(double x, int prec) {
     
     return str;
 };
+
+int sample_poisson(double lambda) {
+    double L = exp(-lambda);
+    int k = 0;
+    double p = 1;
+    do {
+        k++;
+        
+        // Random in [0,1]
+        double u = (double) rand() / (RAND_MAX);
+
+        p *= u;
+
+    } while (p > L);
+    
+    return k-1;
+}
+
 };

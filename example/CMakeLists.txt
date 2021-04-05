@@ -15,12 +15,20 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/../bin)
 find_library(GILSP_LIB gilsp HINTS /usr/local/lib/)
 
 ############################################################
-# main
+# main_gillespie
 ############################################################
 
-add_executable(main src/main.cpp)
+add_executable(main_gillespie src/main_gillespie.cpp)
 
-target_link_libraries(main PUBLIC ${GILSP_LIB})
+target_link_libraries(main_gillespie PUBLIC ${GILSP_LIB})
+
+############################################################
+# main_tau_leaping
+############################################################
+
+add_executable(main_tau_leaping src/main_tau_leaping.cpp)
+
+target_link_libraries(main_tau_leaping PUBLIC ${GILSP_LIB})
 
 ############################################################
 # extra

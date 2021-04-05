@@ -22,11 +22,13 @@ add_library(gilsp SHARED
 	src/counts_hist.cpp
 	src/gillespie.cpp
 	src/rxn.cpp
+	src/tau_leaping.cpp
 	include/gilsp_bits/helpers.hpp
 	include/gilsp_bits/counts.hpp
 	include/gilsp_bits/counts_hist.hpp
 	include/gilsp_bits/gillespie.hpp
 	include/gilsp_bits/rxn.hpp
+	include/gilsp_bits/tau_leaping.hpp
 	${HEADER_FILES_FWDS}
 )
 

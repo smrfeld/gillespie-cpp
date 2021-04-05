@@ -2,6 +2,9 @@
 #include <map>
 #include <vector>
 
+#ifndef REACTION_H
+#define REACTION_H
+
 namespace gilsp {
 
     // ***************
@@ -81,3 +84,5 @@ namespace gilsp {
         void print() const;
     };
 };
+
+#endif

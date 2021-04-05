@@ -2,6 +2,7 @@
 #define GILSP_H
 
 #include "gilsp_bits/gillespie.hpp"
+#include "gilsp_bits/tau_leaping.hpp"
 #include "gilsp_bits/helpers.hpp"
 
 #endif

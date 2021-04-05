@@ -4,32 +4,35 @@
 #include "rxn.hpp"
 #include "counts_hist.hpp"
 
-#ifndef GILLESPIE_H
-#define GILLESPIE_H
+#ifndef TAU_LEAPING_H
+#define TAU_LEAPING_H
 
 namespace gilsp {
 
 // ***************
-// MARK: - Gillespie
+// MARK: - TauLeaping
 // ***************
 
-class Gillespie {
+class TauLeaping {
     
 private:
             
-    // Propensity
-    std::vector<double> _props;
+    // Rates
+    std::vector<double> _rates;
+    
+    // No times events occur in tau interval
+    std::vector<int> _no_times_rxns_occur_in_tau;
     
     // Propensity sigma
-    double _props_sigma = 1.0e-8;
+    double _rates_sigma = 1.0e-8;
     
     // Get propensity
     double _get_prop(double rate, const std::vector<std::pair<std::string,int>> &species_mult, const Counts &counts);
-    
+        
     // Internal copy func/clean up
     void _clean_up();
-    void _copy(const Gillespie& other);
-    void _move(Gillespie &other);
+    void _copy(const TauLeaping& other);
+    void _move(TauLeaping &other);
     
 public:
             
@@ -37,24 +40,24 @@ public:
     // MARK: - Constructor
     // ***************
     
-    Gillespie();
-    Gillespie(const Gillespie& other);
-    Gillespie& operator=(const Gillespie& other);
-    Gillespie(Gillespie&& other);
-    Gillespie& operator=(Gillespie&& other);
-    ~Gillespie();
+    TauLeaping();
+    TauLeaping(const TauLeaping& other);
+    TauLeaping& operator=(const TauLeaping& other);
+    TauLeaping(TauLeaping&& other);
+    TauLeaping& operator=(TauLeaping&& other);
+    ~TauLeaping();
     
     // ***************
     // MARK: - Choose next reaction
     // ***************
   
-    std::pair<Rxn const*, double> choose_next_rxn(const std::vector<Rxn> &rxn_list, const Counts &counts);
+    std::pair<bool,double> calculate_no_times_reaction_occurs_in_tau(const std::vector<Rxn> &rxn_list, const Counts &counts);
 
     // ***************
     // MARK: - Do the reaction
     // ***************
     
-    void do_rxn(Rxn const* rxn, Counts &counts);
+    void update_states_in_tau(const std::vector<Rxn> &rxn_list, Counts &counts);
 
     // ***************
     // MARK: - Run and return the counts history
