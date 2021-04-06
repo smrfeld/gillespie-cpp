@@ -61,7 +61,7 @@ void Counts::set_count(std::string species, int count) {
 void Counts::increment_count(std::string species, int increment, bool require_non_negative) {
     auto it = _counts.find(species);
     if (it != _counts.end()) {
-        _counts[species] += increment;
+        it->second += increment;
     } else {
         _counts[species] = increment;
     }
@@ -70,6 +70,23 @@ void Counts::increment_count(std::string species, int increment, bool require_no
         assert (_counts[species] >= 0);
     } else {
         _counts[species] = std::max(0,_counts.at(species));
+    }
+}
+
+void Counts::increment_count(const std::map<std::string,int> &increments, bool require_non_negative) {
+    for (auto pr: increments) {
+        auto it = _counts.find(pr.first);
+        if (it != _counts.end()) {
+            it->second += pr.second;
+        } else {
+            _counts[pr.first] = pr.second;
+        }
+        
+        if (require_non_negative) {
+            assert (_counts[pr.first] >= 0);
+        } else {
+            _counts[pr.first] = std::max(0,_counts.at(pr.first));
+        }
     }
 }
 

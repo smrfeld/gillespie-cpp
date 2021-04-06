@@ -191,15 +191,23 @@ std::pair<bool,double> TauLeaping::calculate_no_times_reaction_occurs_in_tau(con
 // ***************
 
 void TauLeaping::update_states_in_tau(const std::vector<Rxn> &rxn_list, Counts &counts) const {
+    std::map<std::string,int> count_increments;
+    for (auto species: counts.get_species()) {
+        count_increments[species] = 0;
+    }
+    
     // Update the states
     for (auto i=0; i<rxn_list.size(); i++) {
         for (auto const &pr: rxn_list.at(i).get_reactant_multiplicity()) {
-            counts.increment_count(pr.first, -1 * pr.second * _no_times_rxns_occur_in_tau.at(i), false);
+            count_increments[pr.first] += -1 * pr.second * _no_times_rxns_occur_in_tau.at(i);
         }
         for (auto const &pr: rxn_list.at(i).get_product_multiplicity()) {
-            counts.increment_count(pr.first, pr.second * _no_times_rxns_occur_in_tau.at(i), false);
+            count_increments[pr.first] += pr.second * _no_times_rxns_occur_in_tau.at(i);
         }
     }
+    
+    // Update
+    counts.increment_count(count_increments, false);
 }
 
 // ***************
@@ -228,6 +236,8 @@ CountsHist TauLeaping::run(const std::vector<Rxn> &rxn_list, Counts &counts, dou
     double t_curr = 0.0;
     while (t_curr <= t_max) {
     
+        //        auto start = std::chrono::high_resolution_clock::now();
+        
         auto pr0 = calculate_no_times_reaction_occurs_in_tau(rxn_list, counts, options.with_fixed_tau, options.tau_fixed);
         if (!pr0.first) {
             // Stop, no rxns left
@@ -235,6 +245,12 @@ CountsHist TauLeaping::run(const std::vector<Rxn> &rxn_list, Counts &counts, dou
         }
         double tau = pr0.second;
                 
+        //        auto stop = std::chrono::high_resolution_clock::now();
+        //        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count();
+        //        std::cout << "calc " << duration << std::endl;
+        //
+        //        start = std::chrono::high_resolution_clock::now();
+
         // Store current counts
         while ((t_st_next < t_curr + tau) && (t_st_next <= t_max)) {
             
@@ -252,6 +268,12 @@ CountsHist TauLeaping::run(const std::vector<Rxn> &rxn_list, Counts &counts, dou
             t_st_next += dt_st_every;
         }
          
+        //        stop = std::chrono::high_resolution_clock::now();
+        //        duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count();
+        //        std::cout << "store " << duration << std::endl;
+        //
+        //        start = std::chrono::high_resolution_clock::now();
+
         // Advance time
         t_curr += tau;
         
@@ -262,7 +284,11 @@ CountsHist TauLeaping::run(const std::vector<Rxn> &rxn_list, Counts &counts, dou
         
         // Update states = do rxns
         update_states_in_tau(rxn_list, counts);
-                
+            
+        //        stop = std::chrono::high_resolution_clock::now();
+        //        duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count();
+        //        std::cout << "update " << duration << std::endl;
+        
         // Conserve species
         for (auto const &sp: options.conserved_species) {
             counts.set_count(sp, counts_init.get_count(sp));

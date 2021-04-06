@@ -43,6 +43,8 @@ namespace gilsp {
         
         void increment_count(std::string species, int increment, bool require_non_negative);
         
+        void increment_count(const std::map<std::string,int> &increments, bool require_non_negative);
+        
         int get_count(std::string species) const;
         
         std::vector<std::string> get_species() const;
