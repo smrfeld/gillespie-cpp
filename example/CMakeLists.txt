@@ -23,6 +23,14 @@ add_executable(main_gillespie src/main_gillespie.cpp)
 target_link_libraries(main_gillespie PUBLIC ${GILSP_LIB})
 
 ############################################################
+# bimol_gillespie
+############################################################
+
+add_executable(bimol_gillespie src/bimol_gillespie.cpp)
+
+target_link_libraries(bimol_gillespie PUBLIC ${GILSP_LIB})
+
+############################################################
 # main_tau_leaping
 ############################################################
 

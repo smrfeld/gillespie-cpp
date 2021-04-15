@@ -6,9 +6,30 @@ This library is as simple as it gets and should serve as a simple stepping stone
 
 Hopefully, because it's entirely C++, it will beat out some other Python variants out there.
 
+<img src="example/mathematica/figure_bimol.jpg" alt="drawing" width="400"/>
+<img src="example/mathematica/figure_bimol_ave.jpg" alt="drawing" width="400"/>
+
+## Features
+
+* Simple STL + `C++ 17` standard.
+* Gillespie algorithm.
+* Tau leaping, with adaptive tau step as in [Cao 2006](https://doi.org/10.1063/1.2159468).
+
+## Installing
+
+* Clone the repo.
+* `mkdir build && cd build`
+* `cmake ..`
+* `make && make install`
+
+The default install location is `/usr/local/lib`.
+
+It requires `std==c++17` to work with the filesystem for i/o.
+The namespace is `gilsp`.
+
 ## Example
 
-Here is a simple snippet for the reacton `A -> 0`. It is in the [example](example) directory.
+Here is a simple snippet for the reacton `A -> 0` (note: bimolecular and higher order reactions **are also supported**). It is in the [example](example) directory.
 ```
 #include <iostream>
 #include <vector>
@@ -48,15 +69,3 @@ int main() {
 ```
 
 <img src="example/mathematica/figure.jpg" alt="drawing" width="400"/>
-
-## Installing
-
-* Clone the repo.
-* `mkdir build && cd build`
-* `cmake ..`
-* `make && make install`
-
-The default install location is `/usr/local/lib`.
-
-It requires `std==c++17` to work with the filesystem for i/o.
-The namespace is `gilsp`.
