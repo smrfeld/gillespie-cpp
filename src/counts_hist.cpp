@@ -82,7 +82,7 @@ std::pair<std::vector<double>, std::vector<int>> CountsHist::get_count_hist(std:
     return std::make_pair(_t_hist, _counts_hist.at(species));
 }
 
-void CountsHist::write_count_hist(std::string species, std::string fname) const {
+void CountsHist::write_count_hist_single_species(std::string species, std::string fname) const {
     std::ofstream f;
     f.open(fname);
     
@@ -95,17 +95,41 @@ void CountsHist::write_count_hist(std::string species, std::string fname) const 
     f.close();
 }
 
-void CountsHist::write_count_hist_all_species(std::string dir_name) const {
+void CountsHist::write_count_hist_all_species_seperate_files_by_species(std::string dir_name) const {
     for (auto const &pr: _counts_hist) {
         if (std::string(1,dir_name.back()) != "/") {
-            write_count_hist(pr.first, dir_name + "/" + pr.first + ".txt");
+            write_count_hist_single_species(pr.first, dir_name + "/" + pr.first + ".txt");
         } else {
-            write_count_hist(pr.first, dir_name + pr.first + ".txt");
+            write_count_hist_single_species(pr.first, dir_name + pr.first + ".txt");
         }
     }
 }
 
-void CountsHist::write_count_hist_to_separate_files_each_timepoint(std::string dir_name) const {
+void CountsHist::write_count_hist_all_species_single_file(std::string fname) const {
+    std::ofstream f;
+    f.open(fname);
+    assert (f.is_open());
+    
+    // Write species labels - map is sorted by default
+    f << "t";
+    for (auto const &pr: _counts_hist) {
+        f << " " << pr.first;
+    }
+    f << "\n";
+    
+    // Write values in time
+    for (auto t=0; t<_t_hist.size(); t++) {
+        f << t;
+        for (auto const &pr: _counts_hist) {
+            f << " " << pr.second.at(t);
+        }
+        f << "\n";
+    }
+    
+    f.close();
+}
+
+void CountsHist::write_count_hist_all_species_seperate_files_by_timepoint(std::string dir_name) const {
     std::ofstream f;
     std::string dir_name_mod;
     if (std::string(1,dir_name.back()) != "/") {

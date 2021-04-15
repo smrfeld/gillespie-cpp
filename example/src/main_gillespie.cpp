@@ -29,7 +29,7 @@ int main() {
     counts_hist.print();
     
     // Write it
-    counts_hist.write_count_hist_all_species("../data_gillespie");
+    counts_hist.write_count_hist_all_species_seperate_files_by_species("../data_gillespie");
     
     return 0;
 }
