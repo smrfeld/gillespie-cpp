@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     56056,       1275]
-NotebookOptionsPosition[     54804,       1245]
-NotebookOutlinePosition[     55202,       1261]
-CellTagsIndexPosition[     55159,       1258]
+NotebookDataLength[     56439,       1280]
+NotebookOptionsPosition[     55185,       1250]
+NotebookOutlinePosition[     55583,       1266]
+CellTagsIndexPosition[     55540,       1263]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -28,8 +28,9 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"data", "=", 
    RowBox[{"Import", "[", 
-    RowBox[{"\"\<../data_bimol_gillespie/000.txt\>\"", ",", "\"\<Table\>\""}],
-     "]"}]}], ";"}], "\[IndentingNewLine]", 
+    RowBox[{
+    "\"\<../data_lotka_volterra_gillespie/000.txt\>\"", ",", 
+     "\"\<Table\>\""}], "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{"header", "=", 
   RowBox[{"data", "[", 
    RowBox[{"[", "1", "]"}], "]"}]}], "\[IndentingNewLine]", 
@@ -100,19 +101,20 @@ Cell[BoxData[{
       "]"}], ",", "leg"}], "\[IndentingNewLine]", "}"}], "]"}]}]}], "Input",
  CellChangeTimes->{{3.790370074351088*^9, 3.7903702515879393`*^9}, {
   3.827504957793963*^9, 3.8275051121137466`*^9}, {3.827505260626246*^9, 
-  3.827505261859976*^9}},
+  3.827505261859976*^9}, {3.827505517596719*^9, 3.8275055222059507`*^9}},
  CellLabel->
-  "In[247]:=",ExpressionUUID->"47027ddb-fb11-4569-a287-468409091d27"],
+  "In[307]:=",ExpressionUUID->"47027ddb-fb11-4569-a287-468409091d27"],
 
 Cell[BoxData[
  RowBox[{"{", 
   RowBox[{"\<\"t\"\>", ",", "\<\"H\"\>", ",", "\<\"P\"\>"}], "}"}]], "Output",\
 
  CellChangeTimes->{{3.790370120334013*^9, 3.7903702519164743`*^9}, {
-  3.8275049629155283`*^9, 3.8275049858963118`*^9}, {3.8275050235924473`*^9, 
-  3.827505112405443*^9}, {3.8275052625906677`*^9, 3.82750526938947*^9}},
+   3.8275049629155283`*^9, 3.8275049858963118`*^9}, {3.8275050235924473`*^9, 
+   3.827505112405443*^9}, {3.8275052625906677`*^9, 3.82750526938947*^9}, 
+   3.8275055273695803`*^9},
  CellLabel->
-  "Out[249]=",ExpressionUUID->"1f5af2e9-6f8d-44cf-8f29-361fcf9a5855"],
+  "Out[309]=",ExpressionUUID->"71245bc2-80a3-44c2-8349-4524ad566046"],
 
 Cell[BoxData[
  TemplateBox[{
@@ -362,43 +364,30 @@ gyv1MxzoZ4dd/c09U1/bf3zgzxA=
     Editable -> True]},
   "RowDefault"]], "Output",
  CellChangeTimes->{{3.790370120334013*^9, 3.7903702519164743`*^9}, {
-  3.8275049629155283`*^9, 3.8275049858963118`*^9}, {3.8275050235924473`*^9, 
-  3.827505112405443*^9}, {3.8275052625906677`*^9, 3.8275052694340553`*^9}},
+   3.8275049629155283`*^9, 3.8275049858963118`*^9}, {3.8275050235924473`*^9, 
+   3.827505112405443*^9}, {3.8275052625906677`*^9, 3.82750526938947*^9}, 
+   3.827505527424788*^9},
  CellLabel->
-  "Out[254]=",ExpressionUUID->"c10a4f9b-02f7-42e4-a83e-94c048a68244"]
+  "Out[314]=",ExpressionUUID->"cf48a643-3fb2-4c47-bab3-10ef601ec938"]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"Export", "[", 
-  RowBox[{"\"\<figure_bimol.jpg\>\"", ",", "plt", ",", 
+  RowBox[{"\"\<figure_lotka_volterra.jpg\>\"", ",", "plt", ",", 
    RowBox[{"ImageResolution", "\[Rule]", "200"}]}], "]"}]], "Input",
  CellChangeTimes->{{3.790370252292748*^9, 3.790370266958679*^9}, {
-  3.827505114582007*^9, 3.827505115219037*^9}},
+  3.827505114582007*^9, 3.827505115219037*^9}, {3.827505494609296*^9, 
+  3.8275055004961643`*^9}},
  CellLabel->
-  "In[255]:=",ExpressionUUID->"c16896a6-617d-47e9-aa7b-c318af0182bf"],
+  "In[315]:=",ExpressionUUID->"c16896a6-617d-47e9-aa7b-c318af0182bf"],
 
-Cell[BoxData["\<\"figure_bimol.jpg\"\>"], "Output",
+Cell[BoxData["\<\"figure_lotka_volterra.jpg\"\>"], "Output",
  CellChangeTimes->{3.790370267789885*^9, 3.8275051175371943`*^9, 
-  3.8275052700703278`*^9},
+  3.8275052700703278`*^9, 3.827505527603022*^9},
  CellLabel->
-  "Out[255]=",ExpressionUUID->"af7a6bfd-9d5c-4ae8-b6d1-aaf6962b38a6"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"Dimensions", "[", "dataHunterSt", "]"}]], "Input",
- CellChangeTimes->{{3.827505279690461*^9, 3.827505280982169*^9}},
- CellLabel->
-  "In[265]:=",ExpressionUUID->"0d9db8c8-52c5-4b47-904e-ecdf8d1c05e1"],
-
-Cell[BoxData[
- RowBox[{"{", "131", "}"}]], "Output",
- CellChangeTimes->{3.827505281187313*^9},
- CellLabel->
-  "Out[265]=",ExpressionUUID->"2af0d501-8d53-43f1-b20e-0807154f981d"]
+  "Out[315]=",ExpressionUUID->"13127f04-ca30-4bce-a60d-9b280193e4e0"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -427,7 +416,7 @@ Cell[BoxData[{
      RowBox[{"data", "=", 
       RowBox[{"Import", "[", 
        RowBox[{
-        RowBox[{"\"\<../data_bimol_gillespie/\>\"", "<>", 
+        RowBox[{"\"\<../data_lotka_volterra_gillespie/\>\"", "<>", 
          RowBox[{"IntegerString", "[", 
           RowBox[{"seed", ",", "10", ",", "3"}], "]"}], "<>", 
          "\"\<.txt\>\""}], ",", "\"\<Table\>\""}], "]"}]}], ";", 
@@ -521,9 +510,9 @@ Cell[BoxData[{
       RowBox[{"PlotLabel", "\[Rule]", "\"\<Lotka-Volterra\>\""}]}], 
      "\[IndentingNewLine]", "]"}], ",", "leg"}], "}"}], "]"}]}], "Input",
  CellChangeTimes->{{3.8275051238765783`*^9, 3.827505266240891*^9}, {
-  3.827505312564658*^9, 3.827505351213954*^9}},
+   3.827505312564658*^9, 3.827505351213954*^9}, 3.82750552594514*^9},
  CellLabel->
-  "In[292]:=",ExpressionUUID->"30d281fc-bb6d-453d-bfa0-8585916fb452"],
+  "In[316]:=",ExpressionUUID->"30d281fc-bb6d-453d-bfa0-8585916fb452"],
 
 Cell[BoxData[
  TemplateBox[{
@@ -1238,9 +1227,25 @@ ZvEn8aOr4Rf5Ff7IvHviW/p/Vicfv7q67f9JfoZ/yz/M8Zr8PU99Wu4vef/V
     Editable -> True]},
   "RowDefault"]], "Output",
  CellChangeTimes->{{3.827505240698379*^9, 3.827505272264104*^9}, {
-  3.827505315454506*^9, 3.827505351814653*^9}},
+   3.827505315454506*^9, 3.827505351814653*^9}, 3.827505527943596*^9},
  CellLabel->
-  "Out[298]=",ExpressionUUID->"73b867e8-d71a-416d-946b-3ee59f9f551c"]
+  "Out[322]=",ExpressionUUID->"7042f205-1332-492f-9e05-497872541418"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<figure_lotka_volterra_ave.jpg\>\"", ",", "plt", ",", 
+   RowBox[{"ImageResolution", "\[Rule]", "200"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.827505514720809*^9, 3.8275055151050243`*^9}},
+ CellLabel->
+  "In[323]:=",ExpressionUUID->"f436f186-ce4a-4be7-a6be-2f495e3c388d"],
+
+Cell[BoxData["\<\"figure_lotka_volterra_ave.jpg\"\>"], "Output",
+ CellChangeTimes->{3.8275055281163263`*^9},
+ CellLabel->
+  "Out[323]=",ExpressionUUID->"626c162f-0a44-4408-a645-96ef26463948"]
 }, Open  ]]
 },
 WindowSize->{808, 911},
@@ -1261,21 +1266,21 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[580, 22, 2962, 82, 409, "Input",ExpressionUUID->"47027ddb-fb11-4569-a287-468409091d27"],
-Cell[3545, 106, 411, 8, 34, "Output",ExpressionUUID->"1f5af2e9-6f8d-44cf-8f29-361fcf9a5855"],
-Cell[3959, 116, 11760, 251, 303, "Output",ExpressionUUID->"c10a4f9b-02f7-42e4-a83e-94c048a68244"]
+Cell[580, 22, 3025, 83, 409, "Input",ExpressionUUID->"47027ddb-fb11-4569-a287-468409091d27"],
+Cell[3608, 107, 441, 9, 34, "Output",ExpressionUUID->"71245bc2-80a3-44c2-8349-4524ad566046"],
+Cell[4052, 118, 11785, 252, 303, "Output",ExpressionUUID->"cf48a643-3fb2-4c47-bab3-10ef601ec938"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[15756, 372, 361, 7, 30, "Input",ExpressionUUID->"c16896a6-617d-47e9-aa7b-c318af0182bf"],
-Cell[16120, 381, 227, 4, 34, "Output",ExpressionUUID->"af7a6bfd-9d5c-4ae8-b6d1-aaf6962b38a6"]
+Cell[15874, 375, 421, 8, 30, "Input",ExpressionUUID->"c16896a6-617d-47e9-aa7b-c318af0182bf"],
+Cell[16298, 385, 258, 4, 34, "Output",ExpressionUUID->"13127f04-ca30-4bce-a60d-9b280193e4e0"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[16384, 390, 223, 4, 30, "Input",ExpressionUUID->"0d9db8c8-52c5-4b47-904e-ecdf8d1c05e1"],
-Cell[16610, 396, 177, 4, 34, "Output",ExpressionUUID->"2af0d501-8d53-43f1-b20e-0807154f981d"]
+Cell[16593, 394, 4566, 120, 682, "Input",ExpressionUUID->"30d281fc-bb6d-453d-bfa0-8585916fb452"],
+Cell[21162, 516, 33449, 715, 296, "Output",ExpressionUUID->"7042f205-1332-492f-9e05-497872541418"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[16824, 405, 4535, 120, 682, "Input",ExpressionUUID->"30d281fc-bb6d-453d-bfa0-8585916fb452"],
-Cell[21362, 527, 33426, 715, 296, "Output",ExpressionUUID->"73b867e8-d71a-416d-946b-3ee59f9f551c"]
+Cell[54648, 1236, 327, 6, 30, "Input",ExpressionUUID->"f436f186-ce4a-4be7-a6be-2f495e3c388d"],
+Cell[54978, 1244, 191, 3, 34, "Output",ExpressionUUID->"626c162f-0a44-4408-a645-96ef26463948"]
 }, Open  ]]
 }
 ]

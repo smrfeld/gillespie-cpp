@@ -6,8 +6,8 @@ This library is as simple as it gets and should serve as a simple stepping stone
 
 Hopefully, because it's entirely C++, it will beat out some other Python variants out there.
 
-<img src="example/mathematica/figure_bimol.jpg" alt="drawing" width="400"/>
-<img src="example/mathematica/figure_bimol_ave.jpg" alt="drawing" width="400"/>
+<img src="example/mathematica/figure_lotka_volterra.jpg" alt="drawing" width="400"/>
+<img src="example/mathematica/figure_lotka_volterra_ave.jpg" alt="drawing" width="400"/>
 
 ## Features
 
