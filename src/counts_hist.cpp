@@ -119,7 +119,7 @@ void CountsHist::write_count_hist_all_species_single_file(std::string fname) con
     
     // Write values in time
     for (auto t=0; t<_t_hist.size(); t++) {
-        f << t;
+        f << _t_hist.at(t);
         for (auto const &pr: _counts_hist) {
             f << " " << pr.second.at(t);
         }
